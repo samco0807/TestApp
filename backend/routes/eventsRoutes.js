@@ -2,7 +2,13 @@
 
 // const router = require("express").Router();
 import { Router } from "express";
-import { createEvent, getAllEvents, deleteAnEvent, deleteAllEvents } from "../controller/eventsController.js";
+import {
+  createEvent,
+  getAllEvents,
+  updateEvent,
+  deleteEvent,
+  deleteAllEvents,
+} from "../controller/eventsController.js";
 const router = Router();
 
 // const {
@@ -12,9 +18,9 @@ const router = Router();
 
 router.get("/moshe", getAllEvents);
 router.post("/moshe", createEvent);
-router.delete("/moshe/:id", deleteAnEvent);
+router.put("/moshe/:id", updateEvent);
+router.delete("/moshe/:id", deleteEvent);
 router.delete("/moshe", deleteAllEvents);
-
 
 // module.exports = router;
 export default router;

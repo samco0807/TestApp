@@ -5,7 +5,8 @@ import {
   _createEvent,
   _fetchEvents,
   _deleteAllEvents,
-  _deleteAnEvent,
+  _deleteEvent,
+  _updateEvent,
 } from "../models/eventsModel.js";
 
 // Fonction pour créer un évènement
@@ -42,11 +43,12 @@ export const getAllEvents = async (req, res) => {
 };
 
 // function pour supprimer un évènement
-export const deleteAnEvent = async (req, res) => {
+export const deleteEvent = async (req, res) => {
   const { id } = req.params;
   try {
-    const deleteOneEvent = await _deleteAnEvent(id);
-    res.status(200).json(deleteOneEvent);
+    const deletedEvent = await _deleteEvent(id);
+    console.log("Deleted event:", deletedEvent);
+    res.status(200).json(deletedEvent);
   } catch (error) {
     console.error(error);
     res
@@ -59,12 +61,30 @@ export const deleteAnEvent = async (req, res) => {
 export const deleteAllEvents = async (req, res) => {
   try {
     await _deleteAllEvents();
-    res.status(200).json({message:"All Events deleted successfully"});
+    res.status(200).json({ message: "All Events deleted successfully" });
   } catch (error) {
     console.error(error);
     res
       .status(500)
       .json({ message: "Server error while deleting all events." });
+  }
+};
+
+export const updateEvent = async (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  try {
+    if (id !== -1) {
+      const updatedEvent = await _updateEvent(id, title);
+      console.log("Title updated:", updatedEvent);
+      res.status(200).json(updatedEvent);
+    } else {
+      console.log("Event not found");
+      res.status(404).json({ error: "Event not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error while updating this event." });
   }
 };
 // export default { createEvent, getAllEvents };
